@@ -3,5 +3,5 @@
 # there is actually another way to do this.
 
 pid=$(pgrep -f "4-to_infinity_and_beyond")
-kill -SIGINT "$pid"
+kill "$pid"
 
