@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# This script stops our 4-to_infinity_and_beyond process without using ctrl+c,
+# there is actually another way to do this.
+
+pid=$(pgrep -f "4-to_infinity_and_beyond")
+kill -SIGINT "$pid"
+
