@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+# This script is displaying "Best School" and "Hi"
+
+for (( i=0; i<10; i++))
+do
+	if [ $i -eq 9 ]
+	then
+		echo "Hi"
+	fi
+	echo "Best School"
+done
