@@ -1,9 +1,9 @@
-# File creation
-
+# This creates a file at /tmp
 file { '/tmp/school':
-	mode	=> '0744',
-	owner	=> 'www-data',
-	group	=> 'www-data',
-	ensure	=> 'file',
-	content	=> 'I love Puppet'
+    ensure  => 'file',
+    owner   => 'www-data',
+    group   => 'www-data',
+    mode    => '0744',
+    content => 'I love Puppet',
 }
+
