@@ -2,7 +2,6 @@
 #Package or app installation
 
 package { 'flask':
-	require	 => '2.1.0',
-	ensure	 => 'installed',
+	ensure	 => '2.1.0',
 	provider => 'pip3',
 }
