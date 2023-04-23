@@ -1,0 +1,9 @@
+# configuring ssh client to connect remote server to host.
+
+Host *
+    IdentityFile ~/.ssh/school
+    GSSAPIDelegateCredentials no
+    GSSAPIAuthentication yes
+    HashKnownHosts yes
+    SendEnv LANG LC_*
+    PasswordAuthentication no
