@@ -1,17 +1,15 @@
 #!/usr/bin/env bash
 # This script customises 404 page
 
-sudo apt-get -y update
-sudo apt-get -y upgrade
-sudo apt-get -y install Nginx
+sudo apt-get update
+sudo apt-get install -y nginx
 
-echo "Hello World!" > /var/www/html/index.html
+echo "Hello World!" | sudo tee /var/www/html/index.html
 str_sub="server_name _;\n\trewrite ^\/redirect_me https:\/\/www.google.com permanent;"
-sed -i "s/server_name_;/$str_sub" etc/Nginx/sites-enabled/default
+sudo sed -i "s/server_name _;/$str_sub/" /etc/nginx/sites-enabled/default
 
-echo "Ceci n'est pas une page" > /var/www/html/404page.html
+echo "Ceci n'est pas une page" | sudo tee /var/www/html/404.html
+str_sub="listen 80 default_server;\n\terror_page 404 \/404.html;\n\tlocation = \/404.html {\n\t\troot \/var\/www\/html;\n\t\tinternal;\n\t}"
+sudo sed -i "s/listen 80 default_server;/$str_sub/" /etc/nginx/sites-enabled/default
 
-
-str_sub="listen 80 default_server;\n\terror_page 404 \/404page.html;\n\tlocation = \/404page.html {\n\troot \/var\/www\/html;\n\tinternal;\n\t}"
-sed -i "s/listen 80 default_server;/$str_sub" etc/Nginx/sites-enabled/default
-service Nginx restart
+sudo service nginx restart
