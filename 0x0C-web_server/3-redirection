@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+# This script redirects 301 permanently
+
+sudo apt-get -y update
+sudo apt-get -y upgrade
+sudo apt-get -y install Nginx
+ufw allow 'Nginx HTTP'
+echo "Hello World!" > /var/www/html/index.html
+str_sub="server_name _;\n\trewrite ^\/redirect_me https:\/\/www.google.com permanent;"
+sed -i "s/server_name_;/$str_sub" etc/Nginx/sites-enabled/default
+service Nginx restart
