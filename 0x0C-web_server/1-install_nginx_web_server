@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # This script installs Nginx, listens o port 80 and returns "Hello World!" on GET request
-apt-get update
-apt-get -y install nginx
+sudo apt-get update
+sudo apt-get -y install nginx
 ufw allow 'Nginx HTTP'
-echo "Hello World!" > /var/www/html/index.html
+echo "Hello World!"> /var/www/html/index.html
 service nginx start
