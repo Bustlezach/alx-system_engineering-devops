@@ -7,17 +7,17 @@ exec {'install':
 }
 
 package {'Nginx':
-	ensure	=> 'installed'
+	ensure		=> 'installed'
 }
 
-exec {'listening_on_port_80':
-	line		=> 'listen 80;',
+exec {'Greetings':
 	command		=> 'echo "Hello World" > /var/www/html/index.html',
 	provider	=> 'shell',
 }
 
-exec {'sudo sed -i "s/listen 80 default_server;/listen 80 default_server;\\n\\tlocation \/redirect_me {\\n\\t\\treturn 301 https:\/\/google.com\/;\\n\\t}/" /etc/nginx/sites-available/default':
-  provider => shell,
+exec {'listen_on_port_80':
+	command		=> 'sudo sed -i "s/listen 80 default_server;/listen 80 default_server;\\n\\tlocation \/redirect_me {\\n\\t\\treturn 301 https:\/\/google.com\/;\\n\\t}/" /etc/nginx/sites-available/default',
+	provider	=> shell,
 }
 
 exec {'restart':
