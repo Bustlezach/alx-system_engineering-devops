@@ -9,16 +9,17 @@ sudo ufw allow 'Nginx HTTP'
 sudo mkdir -p /var/www/html
 sudo chmod -R 755 /var/www
 echo 'Hello World!' |sudo tee  /var/www/html/index.html
-echo "Ceci n'est pas une page" |sudo tee /var/www/html/index_404.html
+echo "Ceci n'est pas une page" |sudo tee /var/www/html/404.html
 
 str="server_name _;\n\tadd_header X-Served-By \$hostname;\n\trewrite ^\/redirect_me https:\/\/www.google.com permanent;"
 
 sudo sed -i "s/server_name _;/$str/" /etc/nginx/sites-enabled/default
 
 
-str1="listen 80 default_server;\n\terror_page 404 \/index_404.html;\n\tlocation = \/index_404.html {\n\t\troot \/var\/www\/html;\n\t\tinternal;\n\t}"
+str1="listen 80 default_server;\n\terror_page 404 \/404.html;\n\tlocation = \/404.html {\n\t\troot \/var\/www\/html;\n\t\tinternal;\n\t}"
 
 sudo sed -i "s/listen 80 default_server;/$str1/" /etc/nginx/sites-enabled/default
 
-sudo service nginx restart
 
+sudo service nginx restart
+i
