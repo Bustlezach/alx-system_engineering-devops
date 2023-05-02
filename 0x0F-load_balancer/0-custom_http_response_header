@@ -24,7 +24,7 @@ str="server_name _;\n\trewrite ^\/redirect_me https:\/\/www.google.com permanent
 sudo sed -i "s/server_name _;/$str/" /etc/nginx/sites-enabled/default
 
 
-str2="listen 80 default_server;\n\terror_page 404 \/404.html;\n\tlocation = \/404.html {\n\t\troot \/var\/www\/html;\n\t\tinternal;\n\t}"
+str2="listen 80 default_server;\n\terror_page 404 \/index_404.html;\n\tlocation = \/index_404.html {\n\t\troot \/var\/www\/html;\n\t\tinternal;\n\t}"
 
 sudo sed -i "s/listen 80 default_server;/$str2/" /etc/nginx/sites-enabled/default
 
