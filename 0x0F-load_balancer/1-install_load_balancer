@@ -27,7 +27,7 @@ backend bustlezee_webservers
   server 176546-web-02 100.25.14.62:80 check
 "
 
-echo $str | sudo tee -a /etc/haproxy/haproxy.cfg
+echo "$str" | sudo tee -a /etc/haproxy/haproxy.cfg
 
 # Enable the haproxy to be started by init script
 
