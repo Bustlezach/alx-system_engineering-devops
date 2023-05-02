@@ -17,8 +17,8 @@ frontend  bustlezee-main
         default_backend bustlezee-backend
 backend bustlezee-backend
         balance roundrobin
-        server 176546-web-01 52.91.178.121:80 check
-        server 176546-web-02 3.85.33.215:80 check
+        server 176546-web-01 18.206.207.78:80 check
+        server 176546-web-02 100.25.14.62:80 check
 "
 echo "$server_config" | sudo tee -a /etc/haproxy/haproxy.cfg
 
