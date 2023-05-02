@@ -2,28 +2,42 @@
 # This script installs and configures HAproxy on your lb-01 server
 
 
-sudo apt-get -y update
-sudo apt-get install --no-install-recommends software-properties-common
-sudo add-apt-repository ppa:vbernat/haproxy-2.6
-sudo install apt-get -y install haproxy=2.6.\*
+sudo apt-get install -y software-properties-common
+sudo add-apt-repository -y ppa:vbernat/haproxy-2.6
+sudo apt-get update
+sudo apt-get install -y haproxy=2.6\*
 
+echo "ENABLED=1" | sudo tee /etc/default/haproxy
+cp /etc/haproxy/haproxy.cfg{,.original}
 
-# Edit haproxy.cfg file to configure the HAproxy
-server_config=\
-"
-frontend  bustlezee-main
-        bind *:80
-        mode http
-        default_backend bustlezee-backend
-backend bustlezee-backend
-        balance roundrobin
-        server 176546-web-01 52.91.178.121:80 check
-        server 176546-web-02 3.85.33.215:80 check
-"
-echo "$server_config" | sudo tee -a /etc/haproxy/haproxy.cfg
+str="global
+    log 127.0.0.1 local0 notice
+    maxconn 2000
+    user haproxy
+    group haproxy
 
+defaults
+    log     global
+    mode    http
+    option  httplog
+    option  dontlognull
+    retries 3
+    option redispatch
+    timeout connect  5000
+    timeout client  10000
+    timeout server  10000
 
-# Enable the haproxy to be started by init script
-sudo sed -i 's/ENABLED=0/ENABLED=1/' /etc/default/haproxy
+listen bustlezee
+    bind 0.0.0.0:80
+    mode http
+    stats enable
+    stats uri /haproxy?stats
+    balance roundrobin
+    option httpclose
+    option forwardfor
+    server 176546-web-01 18.206.207.78:80 check
+	server 176546-web-02 100.25.14.62:80 check
+" 
+echo "$str" | sudo tee /etc/haproxy/haproxy.cfg
 
 sudo service haproxy start
