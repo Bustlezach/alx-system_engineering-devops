@@ -1,14 +1,34 @@
 #!/usr/bin/env bash
 # This script configures Nginx so that its HTTP response contains a 
 # custom header (on web-01 and web-02)
+
+
 sudo apt-get -y update
 sudo apt-get -y install nginx
-echo "Hello World!" > /var/www/html/index.nginx-debian.html
-echo "Ceci n'est pas une page" > /usr/share/nginx/html/page_404.html
-new_str="server_name _;\n\trewrite ^\/redirect_me google.com permanent;"
-str1="\n\tadd_header X-Served-By \$hostname;"
-str2="\n\terror_page 404 \/page_404.html;\n\tlocation = \/page_404.html {\n\t\troot \/usr\/share\/nginx\/html;\n\t\tinternal;\n\t}"
+sudo ufw allow 'Nginx HTTP'
+sudo mkdir -p /var/www/html
+sudo chmod -R 755 /var/www
+echo 'Hello World!' |sudo tee  /var/www/html/index.html
+echo "Ceci n'est pas une page" |sudo tee /var/www/html/404.html
 
-sed -i "s/server_name _;/$new_str$str1$str2/" /etc/nginx/sites-enabled/default
 
-service nginx restart
+
+Str="server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
+    add_header X-Served-By \$HOSTNAME;
+    root /var/www/html;
+    index index.html index.htm;
+    location /redirect_me {
+        return 301 http://google.com/;
+    }
+    error_page 404 /404.html;
+    location /404 {
+        root /var/www/html;
+        internal;
+    }
+}"
+echo "$Str" | sudo tee /etc/nginx/sites-available/default > /dev/null
+
+sudo service nginx restart
+
