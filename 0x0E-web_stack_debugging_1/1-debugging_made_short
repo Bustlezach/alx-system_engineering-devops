@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Nginx likes port 80
+# Make it sweet and short
 sed "s/8080/80" /etc/nginx/sites-enabled/default
 sudo service nginx restart
 kill -9 "$(cat /var/run/nginx.pid)"
