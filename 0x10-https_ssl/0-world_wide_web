@@ -1,24 +1,16 @@
 #!/usr/bin/env bash
-# Define IP addresses
-LB_IP="lb-01-IP-address"
-WEB1_IP="web-01-IP-address"
-WEB2_IP="web-02-IP-address"
+# Server domains information
 
-# Define function to display domain info
-domain_info () {
-  input_line=$(dig "$2"."$1" | grep -A1 'ANSWER SECTION:' | tr '\t' '\n' | tail -2 | tr '\n' ' ')
-  echo "The subdomain $2 is a $input_line record and points to $3"
+check_domain() {
+    # Check for a valid domain
+    SUBDOMAINS=("www"  "lb-01" "web-01" "web-02")
+    if [ -z "$2" ]; then
+	for i in "${SUBDOMAINS[@]}"; do
+	    dig "$i.$1" | grep -A1 'ANSWER SECTION:' | tail -n1 | awk '{split($0, SUBDOMAIN, "."); print "The subdomain " SUBDOMAIN[1] " is a " $4 " record and points to " $5}'
+	done
+    else
+	dig "$2.$1" | grep -A1 'ANSWER SECTION:' | tail -n1 | awk '{split($0, SUBDOMAIN, "."); print "The subdomain " SUBDOMAIN[1] " is a " $4 " record and points to " $5}'
+    fi
 }
 
-# Check input arguments
-if [ "$#" == 1 ]; then
-  # Display info for default subdomains
-  domain_info "$1" "www" "$LB_IP"
-  domain_info "$1" "lb-01" "$LB_IP"
-  domain_info "$1" "web-01" "$WEB1_IP"
-  domain_info "$1" "web-02" "$WEB2_IP"
-elif [ "$#" == 2 ]; then
-  # Display info for specified subdomain
-  domain_info "$1" "$2" "$(dig "$2"."$1" +short)"
-fi
-
+check_domain "$1" "$2"
