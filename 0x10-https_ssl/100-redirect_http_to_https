@@ -17,7 +17,7 @@ defaults
 
 frontend bustlezee-frontend-http
         bind *:80
-        bind *:443 ssl crt /etc/ssl/bustlezee.com/bustlezee.com.pem
+        bind *:443 ssl crt /etc/ssl/bustlezee.tech/bustlezee.tech.pem
 
         redirect scheme https code 301 if !{ ssl_fc }
 

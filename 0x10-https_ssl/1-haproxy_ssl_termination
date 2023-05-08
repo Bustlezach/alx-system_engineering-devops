@@ -17,8 +17,7 @@ defaults
 
 frontend bustlezee-frontend-http
         bind *:80
-        bind *:443 ssl crt /etc/ssl/bustlezee.com/bustlezee.com.pem
-
+        bind *:443 ssl crt /etc/ssl/bustlezee.tech/bustlezee.tech.pem
         mode http
         http-request set-header X-Forwarded-Proto http
 
