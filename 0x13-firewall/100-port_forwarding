@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # configure the before.rule of ufw
 
+sudo ufw allow 8080/tcp
 
 str="#
 # rules.before
