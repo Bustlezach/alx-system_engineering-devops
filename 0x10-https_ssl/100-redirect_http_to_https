@@ -1,0 +1,42 @@
+global
+    log 127.0.0.1 local0 notice
+    maxconn 2000
+    user haproxy
+    group haproxy
+
+defaults
+    log     global
+    mode    http
+    option  httplog
+    option  dontlognull
+    retries 3
+    option redispatch
+    timeout connect  5000
+    timeout client  10000
+    timeout server  10000
+
+frontend bustlezee-frontend-http
+        bind *:80
+        bind *:443 ssl crt /etc/ssl/bustlezee.tech/bustlezee.tech.pem
+
+        redirect scheme https code 301 if !{ ssl_fc }
+
+        mode http
+        http-request set-header X-Forwarded-Proto http
+
+        # Test URI to see if its a letsencrypt request
+        acl letsencrypt-acl path_beg /.well-known/acme-challenge/
+        use_backend letsencrypt-backend if letsencrypt-acl
+
+        default_backend bustlezee-backend
+
+backend bustlezee-backend
+        balance roundrobin
+        server 176546-web-01 18.206.207.78:80 check
+        server 176546-web-02 100.25.14.62:80 check
+        option http-server-close
+
+# LE Backend
+backend letsencrypt-backend
+        server letsencrypt 127.0.0.1:8888
+
