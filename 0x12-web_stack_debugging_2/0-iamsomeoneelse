@@ -1,3 +1,10 @@
 #!/usr/bin/env bash
-# Runs the whoami command under the user passed as argument.
+# Run as another user
+
+if [ -z "$1" ]; then
+  echo "Please provide a username as an argument."
+  exit 1
+fi
+
 sudo -u "$1" whoami
+
