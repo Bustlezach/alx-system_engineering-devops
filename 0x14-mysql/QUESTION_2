@@ -1,0 +1,16 @@
+-- Create database
+CREATE DATABASE IF NOT EXISTS tyrell_corp;
+USE tyrell_corp;
+
+-- Create table
+CREATE TABLE IF NOT EXISTS nexus6 (
+    id INT PRIMARY KEY,
+    name VARCHAR(100)
+);
+
+-- Grant SELECT privilege on table
+GRANT SELECT ON tyrell_corp.nexus6 TO 'holberton_user'@'localhost';
+FLUSH PRIVILEGES;
+
+-- Insert data into the table
+INSERT INTO tyrell_corp.nexus6 (id, name) VALUES (1, 'leon');
