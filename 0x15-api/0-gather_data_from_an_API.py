@@ -2,14 +2,15 @@
 # -*- coding: utf-8 -*-
 """
 This Python script uses the REST API,
-for a given employee ID, returns information about his/her TODO list progress.
+for a given employee ID, returns information
+about his/her TODO list progress.
 """
 
 import requests
 from sys import argv
 
 
-def main():
+if __name__ == "__main__":
     """
     Main function to fetch employee's TODO list progress and display it.
     """
@@ -33,7 +34,3 @@ def main():
     print(f"Employee {name} is done with tasks({done}/{len(tasks)}):")
     for task in task_done:
         print(f"\t{task.get('title')}")
-
-
-if __name__ == "__main__":
-    main()
