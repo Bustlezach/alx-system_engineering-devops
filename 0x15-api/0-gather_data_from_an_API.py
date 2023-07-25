@@ -10,7 +10,7 @@ import requests
 from sys import argv
 
 
-if __name__ == "__main__":
+def main():
     """
     Main function to fetch employee's TODO list progress and display it.
     """
@@ -34,3 +34,7 @@ if __name__ == "__main__":
     print(f"Employee {name} is done with tasks({done}/{len(tasks)}):")
     for task in task_done:
         print(f"\t{task.get('title')}")
+
+
+if __name__ == "__main__":
+    main()
