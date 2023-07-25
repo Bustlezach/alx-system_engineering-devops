@@ -6,7 +6,8 @@ import csv
 import requests
 from sys import argv
 
-if __name__ == "__main__":
+
+def main():
     user_id = argv[1]
     url = f"https://jsonplaceholder.typicode.com/users/{user_id}"
     res = requests.get(url)
@@ -17,18 +18,22 @@ if __name__ == "__main__":
     res = requests.get(url)
     tasks = res.json()
 
-    field_names = ['USER_ID', 'USERNAME', 'TASK_COMPLETED_STATUS', 'TASK_TITLE']
+    field_names = ["USER_ID", "USERNAME", "TASK_COMPLETED_STATUS", "TASK_TITLE"]
     result = []
 
     for task in tasks:
         result.append({
-            'USER_ID': user_id,
-            'USERNAME': username,
-            'TASK_COMPLETED_STATUS': task.get('completed'),
-            'TASK_TITLE': task.get('title')
+            "USER_ID": user_id,
+            "USERNAME": username,
+            "TASK_COMPLETED_STATUS": task.get("completed"),
+            "TASK_TITLE": task.get("title"),
         })
 
-    with open(f'{user_id}.csv', 'w', newline='') as csvfile:
+    with open(f"{user_id}.csv", "w", newline="") as csvfile:
         writer = csv.DictWriter(csvfile, fieldnames=field_names)
         writer.writeheader()
         writer.writerows(result)
+
+
+if __name__ == "__main__":
+    main()
