@@ -30,7 +30,7 @@ def main():
         })
 
     with open(f"{user_id}.csv", "w", newline="") as csvfile:
-        writer = csv.DictWriter(csvfile, fieldnames=field_names)
+        writer = csv.DictWriter(csvfile)
         writer.writeheader()
         writer.writerows(result)
 
