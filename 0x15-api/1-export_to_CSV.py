@@ -1,6 +1,8 @@
 #!/usr/bin/python3
 """
-This python script to export data in the CSV format
+This Python script uses the REST API,
+for a given employee ID, returns information
+about his/her TODO list progress and stores it in a CSV file.
 """
 import csv
 import requests
