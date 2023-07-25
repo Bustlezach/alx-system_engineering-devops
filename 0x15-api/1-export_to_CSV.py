@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+# -*- coding: utf-8 -*-
 """
 This Python script uses the REST API,
 for a given employee ID, returns information
