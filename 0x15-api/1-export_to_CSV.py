@@ -7,7 +7,7 @@ import requests
 from sys import argv
 
 
-def main():
+def if __name__ == "__main__":
     user_id = argv[1]
     url = f"https://jsonplaceholder.typicode.com/users/{user_id}"
     res = requests.get(url)
@@ -30,10 +30,6 @@ def main():
         })
 
     with open(f"{user_id}.csv", "w", newline="") as csvfile:
-        writer = csv.DictWriter(csvfile)
+        writer = csv.DictWriter(csvfile, fieldnames=field_names)
         writer.writeheader()
         writer.writerows(result)
-
-
-if __name__ == "__main__":
-    main()
