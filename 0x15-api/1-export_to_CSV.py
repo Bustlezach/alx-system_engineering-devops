@@ -29,7 +29,9 @@ def fetch_todo_progress(user_id):
     res = requests.get(url)
     tasks = res.json()
 
-    field_names = ['USER_ID', 'USERNAME', 'TASK_COMPLETED_STATUS', 'TASK_TITLE']
+    field_names = [
+        'USER_ID', 'USERNAME', 'TASK_COMPLETED_STATUS', 'TASK_TITLE'
+    ]
     result = []
 
     for task in tasks:
