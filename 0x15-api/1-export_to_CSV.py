@@ -42,7 +42,6 @@ def fetch_todo_progress(user_id):
 
     with open(f'{user_id}.csv', 'w', newline='') as csvfile:
         writer = csv.DictWriter(csvfile, fieldnames=field_names)
-        writer.writeheader()
         writer.writerows(result)
 
 if __name__ == "__main__":
