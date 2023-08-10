@@ -1,46 +1,60 @@
 #!/usr/bin/python3
-
 """
-This script queries the Reddit API, parses the title of all hot articles,
-and prints a sorted count of given keywords (case-insensitive, delimited by spaces.
-Javascript should count as javascript, but java should not).
+A recursive function that queries the Reddit API,
+parses the title of all hot articles, and prints a sorted
+count of given keywords (case-insensitive, delimited by spaces.
+Javascript should count as javascript, but java should not)
 """
-
 import requests
-from collections import Counter
 
 
-def count_words(subreddit, word_list, after=None, word_counter=None):
-    """This function recursively print the article titles"""
-    if word_counter is None:
-        word_counter = Counter()
+def count_words(subreddit, list_word, ins={}, after="", count=0):
+    """Prints counts of given words found in hot posts of a given subreddit.
 
-    url = f"https://www.reddit.com/r/{subreddit}/hot.json"
-    headers = {'User-Agent': 'Custom User-Agent'}
-    params = {'limit': 25, 'after': after}
-
-    message = requests.get(url, headers=headers, params=params, allow_redirects=False)
-
-    if message.status_code == 404:
+    Args:
+        subreddit (str): The subreddit to search.
+        list_word (list): The list of words to searched in post titles.
+        ins (obj): Key/value pairs of words.
+        after (str): parameter of next page of the API results.
+        count (int): parameter of results matched thus far.
+    """
+    url = "https://www.reddit.com/r/{}/hot/.json".format(subreddit)
+    headers = {
+        "User-Agent": "linux:0x16.api.advanced:v1.0.0 (by /u/bustlezee)"
+    }
+    params = {
+        "limit": 25,
+        "after": after,
+        "count": count
+    }
+    message = requests.get(url, headers=headers, params=params,
+                            allow_redirects=False)
+    try:
+        res = message.json()
+        if message.status_code == 404:
+            raise Exception
+    except Exception:
+        print("")
         return
 
-    res = message.json()
+    res = res.get("data")
+    after = res.get("after")
+    count += res.get("dist")
+    for i in res.get("children"):
+        title = i.get("data").get("title").lower().split()
+        for word in list_word:
+            if word.lower() in title:
+                times = len([t for t in title if t == word.lower()])
+                if ins.get(word) is None:
+                    ins[word] = times
+                else:
+                    ins[word] += times
 
-    if 'data' not in res:
-        return
-
-    data = res['data']
-    after = data['after']
-
-    for post in data['children']:
-        title = post['data']['title'].lower()
-        for word in word_list:
-            if f" {word.lower()} " in f" {title} ":
-                word_counter[word.lower()] += 1
-
-    if after:
-        count_words(subreddit, word_list, after, word_counter)
+    if after is None:
+        if len(ins) == 0:
+            print("")
+            return
+        ins = sorted(ins.items(), key=lambda kv: (-kv[1], kv[0]))
+        [print("{}: {}".format(k, v)) for k, v in ins]
     else:
-        sorted_words = sorted(word_counter.items(), key=lambda x: (-x[1], x[0]))
-        for word, count in sorted_words:
-            print(f"{word}: {count}")
+        count_words(subreddit, list_word, ins, after, count)
