@@ -8,7 +8,9 @@ import requests
 def top_ten(subreddit):
     """This function prints the top ten hot posts."""
     url = f"https://www.reddit.com/r/{subreddit}/hot.json"
-    headers = {'User-Agent': 'linux:0x16.api.advanced:v1.0.0 (by /u/bustlezee)'}
+    headers = {
+        'User-Agent': 'linux:0x16.api.advanced:v1.0.0 (by /u/bustlezee)'
+    }
     params = {'limit': 10}
     message = requests.get(url, headers=headers,
                            params=params,
@@ -17,4 +19,5 @@ def top_ten(subreddit):
         print("None")
         return
     res = message.json().get("data")
-    [print(i.get("data").get("title")) for i in res.get("children")]
+    for i in res.get("children"):
+        print(i.get("data").get("title"))
