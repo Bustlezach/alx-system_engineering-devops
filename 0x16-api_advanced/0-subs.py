@@ -9,12 +9,12 @@ import requests
 
 
 def number_of_subscribers(subreddit):
-    """returns the number of subscribers"""
+    """Returns the number of subscribers"""
     url = f"https://www.reddit.com/r/{subreddit}/about.json"
-    headers = {'User-Agent': 'Custom User-Agent'}
+    headers = {'User-Agent': 'linux:0x16.api.advanced:v1.0.0 (by /u/bustlezee)'}
 
     message = requests.get(url, headers=headers, allow_redirects=False)
-    if message.status_code != 200:
+    if message.status_code == 404:
         return 0
     
     response = message.json()
