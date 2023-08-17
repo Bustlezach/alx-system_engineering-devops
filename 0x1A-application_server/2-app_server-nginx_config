@@ -1,19 +1,21 @@
+make this  Bash script to pass Shellcheck (version 0.3.7-5~ubuntu16.04.1 via apt-get) without any erro
+
 # Configures Nginx to serve the route /airbnb-onepage/ from AirBnB_clone_v2.
 
 server {
     # Listen on port 80
-    listen      80 default_server;
-    listen      [::]:80 default_server ipv6only=on;
+    listen 80;
 
     # Use IP of server as domain name
-    server_name 52.205.172.113;
+    server_name 52.205.172.113 www.bustlezee.tech bustlezee.tech;
 
     # Customize HTTP response header
     add_header  X-Served-By 176546-web-01;
 
     # Serve /airbnb-onepage/ route from AirBnB_clone_v2
-    location = /airbnb-onepage/ {
-        proxy_pass http://127.0.0.1:5000/airbnb-onepage/;
+    location / {
+        include proxy_params;
+        proxy_pass http://unix:/home/ubuntu/AirBnB_clone_v2/web_flask/hello_route.sock;
     }
 
     # 404 error page
