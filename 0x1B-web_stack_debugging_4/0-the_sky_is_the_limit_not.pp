@@ -1,6 +1,6 @@
 # Fix the amount of traffic an Nginx server handles.
 
-exec { 'fix-nginx':
+exec { 'nginx':
   command => 'sed -i "s/15/4096/" /etc/default/nginx',
   path    => '/usr/local/bin/:/bin/'
 } ->
