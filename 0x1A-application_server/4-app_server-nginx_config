@@ -23,6 +23,18 @@ upstream app_server_flaskapi {
     server 0.0.0.0:5000 fail_timeout=0;
 }
 
+upstream app_server_flaskapi_even {
+    server 0.0.0.0:5001 fail_timeout=0;
+}
+
+upstream app_server_api {
+    server 0.0.0.0:5003 fail_timeout=0;
+}
+
+upstream app_server_web_dynamic {
+    server 0.0.0.0:5004 fail_timeout=0;
+}
+
 server {
         listen 80 default_server;
         listen [::]:80 default_server;
@@ -48,6 +60,11 @@ server {
 			index index.html;
 		}
 		
+		location /hbnb_static/ {
+			alias "/data/web_static/current/";
+			autoindex off;
+		}
+		
 		# Add index.php to the list if you are using PHP
         index index.html index.htm index.nginx-debian.html;
 
@@ -61,12 +78,37 @@ server {
 		}
 		
 
+		# Serve /airbnb-dynamic/number_odd_or_even/ route from AirBnB_clone_v2
+		location ~ ^/airbnb-dynamic/number_odd_or_even/(\d+)$ {
+			proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+			proxy_set_header Host $http_host;
+			proxy_redirect off;
+			proxy_pass http://app_server_flaskapi_even;
+		}
+		
+		# Serve api from AirBnB_clone_v2
+		location /api/ {
+			proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+			proxy_set_header Host $http_host;
+			proxy_redirect off;
+			proxy_pass http://app_server_api;
+		}
+		
+		# Serve web server from AirBnB_clone_v2
+		location /2-hbnb/ {
+			proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+			proxy_set_header Host $http_host;
+			proxy_redirect off;
+			proxy_pass http://app_server_web_dynamic/2-hbnb;
+		}
+		
+
 		error_page 404 /404.html;
 		location = /404.html {
 			root /var/www/html;
 		}
 		
-        server_name bustlezee.tech www.bustlezee.tech;
+        server_name 52.205.172.113 www.bustlezee.tech bustlezee.tech;
 		
 		add_header X-Served-By 176546-web-01;
 }
